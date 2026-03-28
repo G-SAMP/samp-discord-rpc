@@ -1,6 +1,7 @@
 CXX      = g++
 STRIP    = strip
 OUT_NAME = samp_discord_rpc.asi
+OUT_NAME_WITH_STATIC = samp_discord_rpc_static.asi
 SRC_DIR  = src
 
 # --- Compiler Flags ---
@@ -10,6 +11,7 @@ SRC_DIR  = src
 # -static-libgcc -static-libstdc++: resolves all dependencies into the final .asi, ensuring no external DLLs are needed.
 # -I$(SRC_DIR): Tells the compiler to look in 'src/' for includes so "discord-rpc/discord_rpc.h" resolves correctly.
 CXXFLAGS = -m32 -Os -Wall -static-libgcc -static-libstdc++ -I$(SRC_DIR)
+CXXFLAGS_WITHOUT_STATIC = -m32 -Os -Wall -I$(SRC_DIR)
 
 # --- Linker Flags ---
 # -shared: Create a DLL/ASI (dynamic library)
@@ -24,15 +26,23 @@ LDFLAGS  = -shared -Wl,--subsystem,windows:5.1 -L$(SRC_DIR)/discord-rpc -ldiscor
 # Automatically grabs all .cpp files directly inside the src/ folder.
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 
-all: $(OUT_NAME)
+all: $(OUT_NAME_WITH_STATIC) 
 
-$(OUT_NAME): $(SOURCES)
-	@echo [BUILDING] Generating $(OUT_NAME)...
+$(OUT_NAME_WITH_STATIC): $(SOURCES)
+	@echo [BUILDING] Generating $(OUT_NAME_WITH_STATIC)...
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 	@echo [STRIPPING] Removing debug symbols...
 	$(STRIP) $@
 	@echo [SUCCESS] Build Complete!
 
+without-static: $(SOURCES)
+	@echo [BUILDING] Generating $(OUT_NAME) without static linking...
+	$(CXX) $(CXXFLAGS_WITHOUT_STATIC) -o $(OUT_NAME) $^ $(LDFLAGS)
+	@echo [STRIPPING] Removing debug symbols...
+	$(STRIP) $(OUT_NAME)
+	@echo [SUCCESS] Build Complete!
+
 clean:
 	@if exist $(OUT_NAME) del $(OUT_NAME)
-	@echo [CLEAN] Removed $(OUT_NAME)
+	@if exist $(OUT_NAME_WITH_STATIC) del $(OUT_NAME_WITH_STATIC)
+	@echo [CLEAN] Removed $(OUT_NAME) and $(OUT_NAME_WITH_STATIC) if they existed.
