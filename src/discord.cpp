@@ -23,8 +23,7 @@ namespace Discord
 		handlers.joinGame = joinGame;
 		handlers.spectateGame = spectateGame;
 		handlers.joinRequest = joinRequest;
-		Discord_Initialize("416719211960991756", &handlers, 1, nullptr); // Haul App ID
-		// Discord_Initialize("1223995792545681420", &handlers, 1, nullptr); // Galax App ID
+		Discord_Initialize("416719211960991756", &handlers, 1, nullptr);
 		Discord_ClearPresence();
 	}
 
@@ -34,10 +33,8 @@ namespace Discord
 		discordPresence.state = state;
 		discordPresence.details = details;
 		discordPresence.startTimestamp = time;
-		// discordPresence.largeImageKey = "valrise";
 		discordPresence.largeImageKey = image;
 		discordPresence.largeImageText = imageDetails;
-		// discordPresence.smallImageKey = "valrise";
 		discordPresence.smallImageKey = "info";
 		discordPresence.smallImageText = infoDetails;
 		Discord_UpdatePresence(&discordPresence);

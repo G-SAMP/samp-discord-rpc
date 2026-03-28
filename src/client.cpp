@@ -101,41 +101,4 @@ namespace SAMP
 
 		return defaultLogo;
 	}
-
-	std::string ServerData::getServerLogoURL(std::string serverShortName)
-	{
-		std::stringstream httpResponseStream;
-
-		if (
-			 HTTP::WebRequest(
-				  [&httpResponseStream](auto data, auto len)
-				  {
-					  httpResponseStream.write(data, len);
-					  return true;
-				  },
-				  //   "Mozilla/5.0", "raw.githubusercontent.com", INTERNET_DEFAULT_HTTPS_PORT)
-				  //   .get("Hual/samp-discord-plugin/custom-logos/custom-logos.txt"))
-				  "Mozilla/5.0", "gist.githubusercontent.com", INTERNET_DEFAULT_HTTPS_PORT)
-				  .get("kunaldangi/6e43b0a941b37d04022b0919c5b7c189/raw/2b6d7afe6adeb2c05abb0a4e3f6dbdce642ffa62/samp-server-logo.txt"))
-		{
-			for (std::string line; std::getline(httpResponseStream, line);)
-			{
-				Logger::log(LogLevel::Debug, "line: %s", line.c_str());
-	
-				auto keyValueDelimiterIndex = line.find('=');
-				if (keyValueDelimiterIndex != std::string::npos)
-				{
-					std::string keyTmp = line.substr(0, keyValueDelimiterIndex);
-					std::string url = line.substr(keyValueDelimiterIndex + 1);
-					if (keyTmp == serverShortName)
-					{
-						Logger::log(LogLevel::Debug, "keyTmp: %s, url: %s", keyTmp.c_str(), url.c_str());
-						return url;
-					}
-				}
-			}
-		}
-
-		return "logo";
-	}
 }

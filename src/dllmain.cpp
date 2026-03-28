@@ -23,10 +23,8 @@ static void process(void *)
 						  httpResponseStream.write(data, len);
 						  return true;
 					  },
-					//   "Mozilla/5.0", "raw.githubusercontent.com", INTERNET_DEFAULT_HTTPS_PORT)
-					//   .get("Hual/samp-discord-plugin/custom-logos/custom-logos.txt"))
-					  "Mozilla/5.0", "gist.githubusercontent.com", INTERNET_DEFAULT_HTTPS_PORT)
-					  .get("kunaldangi/437bd36855da1d70fff8944bd8146dd9/raw/8466cb8059a241cdf7bda6bda4936cdd30a26741/custom-logos.txt"))
+					  "Mozilla/5.0", "raw.githubusercontent.com", INTERNET_DEFAULT_HTTPS_PORT)
+					  .get("G-SAMP/samp-discord-rpc/main/assets/custom-logos.txt"))
 			{
 				logo = data.logoFromStream(httpResponseStream, logo);
 			}
@@ -42,11 +40,9 @@ static void process(void *)
 				if (query.info(information))
 				{
 					auto fullAddress = data.address + ':' + data.port;
-					Logger::log(LogLevel::Debug, "Connected to %s", fullAddress.c_str());
 					auto players = std::to_string(information.basic.players) + "/" + std::to_string(information.basic.maxPlayers) + " players online";
 					auto info = "Playing " + information.gamemode + " as " + data.username + " in " + information.language;
 					auto image = logo;
-					Logger::log(LogLevel::Debug, "Logo: %s, Image: %s", logo.c_str(), image.c_str());
 					
 					if (image == "logo")
 					{
@@ -59,10 +55,8 @@ static void process(void *)
 							image = "tumbleweed";
 						}
 					}
-
-					auto logoURL = data.getServerLogoURL(image); // hosted logo urls
-
-					Discord::update(start, fullAddress, information.hostname, logoURL, info, players);
+				
+					Discord::update(start, fullAddress, information.hostname, image, info, players);
 					Sleep(15000 - QUERY_DEFAULT_TIMEOUT * 2);
 				}
 			}

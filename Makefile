@@ -1,6 +1,6 @@
 CXX      = g++
 STRIP    = strip
-OUT_NAME = samp_discord.asi
+OUT_NAME = samp_discord_rpc.asi
 SRC_DIR  = src
 
 # --- Compiler Flags ---
