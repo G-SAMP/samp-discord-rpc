@@ -26,21 +26,23 @@ LDFLAGS  = -shared -Wl,--subsystem,windows:5.1 -L$(SRC_DIR)/discord-rpc -ldiscor
 # Automatically grabs all .cpp files directly inside the src/ folder.
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 
-all: $(OUT_NAME_WITH_STATIC) 
+all: $(OUT_NAME_WITH_STATIC) $(OUT_NAME)
+	@echo [SUCCESS] Both builds completed!
 
 $(OUT_NAME_WITH_STATIC): $(SOURCES)
-	@echo [BUILDING] Generating $(OUT_NAME_WITH_STATIC)...
+	@echo [BUILDING] Generating $@ with static linking...
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 	@echo [STRIPPING] Removing debug symbols...
 	$(STRIP) $@
-	@echo [SUCCESS] Build Complete!
 
-without-static: $(SOURCES)
-	@echo [BUILDING] Generating $(OUT_NAME) without static linking...
-	$(CXX) $(CXXFLAGS_WITHOUT_STATIC) -o $(OUT_NAME) $^ $(LDFLAGS)
+$(OUT_NAME): $(SOURCES)
+	@echo [BUILDING] Generating $@ without static linking...
+	$(CXX) $(CXXFLAGS_WITHOUT_STATIC) -o $@ $^ $(LDFLAGS)
 	@echo [STRIPPING] Removing debug symbols...
-	$(STRIP) $(OUT_NAME)
-	@echo [SUCCESS] Build Complete!
+	$(STRIP) $@
+
+with-static: $(OUT_NAME_WITH_STATIC)
+without-static: $(OUT_NAME)
 
 clean:
 	@if exist $(OUT_NAME) del $(OUT_NAME)
