@@ -126,5 +126,5 @@ samp.neucomx.com:7777=guerrasmundiales
 103.98.152.57:7777=saglobalrp
 ip.redeparadox.com:7777=redparadoxrpg
 217.160.43.156:3800=sapucopchase
-rp.valrisegaming.com:7777=https://forum.valrisegaming.com/uploads/monthly_2024_03/image.png.c82598ee3bb9c724325b098a8e5c2fe2.png
-server.sarp.gg:7777=https://www.sarp.gg/logo.webp
+rp.valrisegaming.com:7777=https://sampdiscordrpc.gsamp.workers.dev/ValriseRPLogo.png
+server.sarp.gg:7777=https://sampdiscordrpc.gsamp.workers.dev/SARPLogo.png
